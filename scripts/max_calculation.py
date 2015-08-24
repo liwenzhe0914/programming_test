@@ -39,7 +39,6 @@ class running_maximum:
         	return np.amax(self.array)
 
 def talker(data):
-	print data
 	pub2 = rospy.Publisher('max_calculation', Solution, queue_size=10)
 	msg = Solution()
 
