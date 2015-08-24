@@ -2,7 +2,7 @@
 # This Python file uses the following encoding: utf-8
 
 # Copyright (C) 2015 General Interfaces GmbH
-# Maintainer: Raphael Dürscheid <mailto:rd@gi.ai>
+# Maintainer: Raphael DÃ¼rscheid <mailto:rd@gi.ai>
 
 # This file is part of *Test the coder*.
 
@@ -21,43 +21,17 @@
 
 import rospy
 from numpy import random
-from programming_test.msg import Solution
-import numpy as np
-
-class running_maximum:
-    	"""calculate the running maximum for a given window"""
-	def __init__(self, windowsize):
-        	self.array = np.zeros(windowsize)
-
-	def put(self, number_in):
-        	np.put(self.array, [0], [number_in])
-        	self.array = np.roll(self.array,1)
-        	return True
-
-	def get(self):
-        	return np.amax(self.array)
-
-# set window size to be 1000
-r_max = running_maximum(1000) 
+from std_msgs.msg import Int64
 
 def talker():
-	pub = rospy.Publisher('numbers', Solution, queue_size=10)
-	rospy.init_node('publish')
-	rate = rospy.Rate(100) # 100hz
-	msg = Solution()
-	
-	while not rospy.is_shutdown():
-		## put random number into "input (uint64)"
-		msg.input = random.random_integers(0,065105107105)
-		## calculate max value as solution (int64)
-		r_max.put(msg.input)
-		msg.solution = r_max.get()
-
-        	rospy.loginfo(msg) ## print msg in shell
-        	pub.publish(msg)
-        	rate.sleep()
-
-
+    pub = rospy.Publisher('numbers', Int64, queue_size=10)
+    rospy.init_node('publish', anonymous=True)
+    rate = rospy.Rate(100) # 100hz
+    while not rospy.is_shutdown():
+        random_num = random.random_integers(0,065105107105)
+        rospy.loginfo(random_num)
+        pub.publish(random_num)
+        rate.sleep()
 
 if __name__ == '__main__':
     try:

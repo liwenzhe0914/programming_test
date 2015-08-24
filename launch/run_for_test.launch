@@ -1,4 +1,5 @@
 <launch>
-    <node name="publisher" pkg="programming_test" type="publisher.py"  />
-    <node name="verify" pkg="programming_test" type="verify.py" output="screen" />
+	<node name="publisher" pkg="programming_test" type="publisher.py"  />
+	<node name="calculation" pkg="programming_test" type="max_calculation.py" output="screen" />
+	<node name="verify" pkg="programming_test" type="verify.py" output="screen" />
 </launch>

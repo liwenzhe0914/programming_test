@@ -23,6 +23,7 @@ include_directories(
 
 install(PROGRAMS
 	scripts/publisher.py
+	scripts/max_calculation.py
 	scripts/verify.py
 	DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

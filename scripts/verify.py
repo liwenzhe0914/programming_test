@@ -2,7 +2,7 @@
 # This Python file uses the following encoding: utf-8
 
 # Copyright (C) 2015 General Interfaces GmbH
-# Maintainer: Raphael Dürscheid <mailto:rd@gi.ai>
+# Maintainer: Raphael DÃ¼rscheid <mailto:rd@gi.ai>
 
 # This file is part of *Test the coder*.
 
@@ -20,44 +20,47 @@
 # along with *Test the coder*.  If not, see <http://www.gnu.org/licenses/>.
 
 import rospy
+from std_msgs.msg import String
 from programming_test.msg import Solution
 import numpy as np
 
 class running_maximum:
-    	"""calculate the running maximum for a given window"""
-	def __init__(self, windowsize):
-        	self.array = np.zeros(windowsize)
+    """calculate the running maximum for a given window"""
+    def __init__(self, windowsize):
+        self.array = np.zeros(windowsize)
 
-	def put(self, number_in):
-        	np.put(self.array, [0], [number_in])
-        	self.array = np.roll(self.array,1)
-        	return True
+    def put(self, number_in):
+        np.put(self.array, [0], [number_in])
+        self.array = np.roll(self.array,1)
+        return True
 
-	def get(self):
-        	return np.amax(self.array)
+    def get(self):
+        return np.amax(self.array)
 
 
 def callback(data):
-	verify(data)
+    verify(data)
 
 def verify(data):
-	verify.r_max.put(data.input)
+    verify.r_max.put(data.input)
 
-	maximum = verify.r_max.get()
-	if data.solution == maximum:
-        	rospy.loginfo(rospy.get_caller_id() + "Maximum is correct: %d", data.solution)
-        	return True
-	else:
-        	rospy.logerr(rospy.get_caller_id() + "Wrong maximum, should be: %d, instead of: %d!", maximum, data.solution)
-        	return False
-
+    maximum = verify.r_max.get()
+    if data.solution == maximum:
+        rospy.loginfo(rospy.get_caller_id() + "Maximum is correct: %d", data.solution)
+        return True
+    else:
+        rospy.logerr(rospy.get_caller_id() + "Wrong maximum, should be: %d, instead of: %d!", maximum, data.solution)
+        return False
 verify.r_max = running_maximum(1000)
 
-def listener():		
+def listener():
 
-    	rospy.init_node('verify')
-    	rospy.Subscriber("numbers", Solution, callback)
-	rospy.spin()
+    rospy.init_node('verify')
+
+    rospy.Subscriber("max_calculation", Solution, callback)
+
+    rospy.spin()
 
 if __name__ == '__main__':
-	listener()
+    
+    listener()
